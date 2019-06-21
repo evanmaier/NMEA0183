@@ -1,4 +1,5 @@
-import NMEA0183
+import time
+from NMEA0183 import NMEA0183
 
 serial_location = '/dev/ttyUSB0'
 serial_baudrate = 4800
@@ -13,21 +14,21 @@ nmea.start()
 #Checks if there is a valid connection
 if nmea.exit == False:
    print 'Connection!'
-   
+
    #More info on data names below
    #Different data types require different devices...obviously...
    #Some examples...
-   
+   time.sleep(3)
    #GPS data
    #print nmea.data_gps['lat']
    #print nmea.data_gps['lon']
    
    #Depth data
-   print nmea.data_depth['meters']+'M'
+   print nmea.data_depth['meters']
    
    #Weather data
    #print nmea.data_weather['wind_angle']
-   print nmea.data_weather['water_temp']+'C'
+   print nmea.data_weather['water_temp'],nmea.data_weather['water_unit']
    
    #Rudder data
    #print nmea.data_rudder['stbd_angle']
