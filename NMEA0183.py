@@ -192,7 +192,7 @@ class NMEA0183():
 		Deconstructs NMEA depth readings.
 		'''
 		self.data_depth['meters'] = self.serial_data[1]
-		self.data_depth['offset'] = self.serial_data[2]
+		self.data_depth['offset'] = 0
 
 	def nmea_mwv(self):
 		'''
@@ -208,7 +208,7 @@ class NMEA0183():
 		Deconstructs NMEA water readings.
 		'''
 		self.data_weather['water_temp'] = self.serial_data[1]
-		self.data_weather['water_unit'] = self.serial_data[2]
+		self.data_weather['water_unit'] = 'C'
 
 	def nmea_mta(self):
 		'''

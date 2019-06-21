@@ -23,11 +23,11 @@ if nmea.exit == False:
    #print nmea.data_gps['lon']
    
    #Depth data
-   print nmea.data_depth['meters']
+   print nmea.data_depth['meters']+'M'
    
    #Weather data
    #print nmea.data_weather['wind_angle']
-   print nmea.data_weather['water_temp']
+   print nmea.data_weather['water_temp']+'C'
    
    #Rudder data
    #print nmea.data_rudder['stbd_angle']
