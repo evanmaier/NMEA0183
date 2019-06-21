@@ -13,28 +13,22 @@ nmea.start()
 
 #Checks if there is a valid connection
 if nmea.exit == False:
-   print 'Connection!'
-
-   #More info on data names below
-   #Different data types require different devices...obviously...
-   #Some examples...
+   print('Connection!')
+   #wait for buffer
    time.sleep(3)
-   #GPS data
-   #print nmea.data_gps['lat']
-   #print nmea.data_gps['lon']
-   
-   #Depth data
-   print nmea.data_depth['meters']
-   
-   #Weather data
-   #print nmea.data_weather['wind_angle']
-   print nmea.data_weather['water_temp'],nmea.data_weather['water_unit']
-   
-   #Rudder data
-   #print nmea.data_rudder['stbd_angle']
-   
+
+   while True:
+
+      #Depth data
+      depth = nmea.data_depth['meters']
+
+      #Weather data
+      temperature = nmea.data_weather['water_temp']
+
+      time.sleep(0.1)
+
    #Quit the NMEA connection
    nmea.quit()
 
 else:
-   print 'No connection!'
+   print('No connection!')
