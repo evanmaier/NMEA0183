@@ -1,5 +1,7 @@
 import time
 from NMEA0183 import NMEA0183
+from datetime import datetime
+import json
 
 serial_location = '/dev/ttyUSB0'
 serial_baudrate = 4800
@@ -14,21 +16,27 @@ time.sleep(1)
 
 #Checks if there is a valid connection
 if nmea.exit == False:
-   print('Connection!')
+    print('Connection!')
+    log = {'depth': 0.0, 'temperature': 0.0, 'time': ''}
 
-   while True:
+    while True:
 
-      #Depth data
-      depth = nmea.data_depth['meters']
+        #Depth data
+        log['depth'] = nmea.data_depth['meters']
 
-      #Weather data
-      temperature = nmea.data_weather['water_temp']
+        #Weather data
+        log['temperature'] = nmea.data_weather['water_temp']
+        
+        #time
+        log['time'] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
 
-      print('depth: {}\t temp: {}'.format(depth,temperature))
-      time.sleep(0.1)
+        with open('/home/pi/logs/transducer.json','w') as f:
+            json.dump(log,f,indent=4)
 
-   #Quit the NMEA connection
-   nmea.quit()
+        time.sleep(0.1)
+
+    #Quit the NMEA connection
+    nmea.quit()
 
 else:
-   print('No connection!')
+    print('No connection!')
