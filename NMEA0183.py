@@ -10,7 +10,7 @@ from threading import Thread
 class NMEA0183():
 
 
-	def __init__(self, location, baud_rate, timeout):
+	def __init__(self, location, baud_rate, m_timeout):
 		'''
 		Initiates variables.
 		
@@ -23,7 +23,7 @@ class NMEA0183():
 		self.exit = False
 		self.location = location
 		self.baud_rate = baud_rate
-		self.timeout = timeout
+		self.timeout = m_timeout
 		self.serial_dev = None
 		self.serial_data = None
 
@@ -43,7 +43,7 @@ class NMEA0183():
 		Creates a thread to read serial connection data.
 		'''
 		try:
-			self.serial_dev = serial.Serial(self.location, self.baud_rate, self.timeout)
+			self.serial_dev = serial.Serial(self.location, self.baud_rate, timeout=self.timeout)
 			serial_thread = Thread(None,self.read_thread,None,())
 			serial_thread.start()
 		except:
@@ -90,7 +90,7 @@ class NMEA0183():
 		dat_cur = self.serial_dev.read(1)
 		x = self.serial_dev.inWaiting()
 		if x: dat_cur = dat_cur + self.serial_dev.read(x)
-		return dat_cur
+		return dat_cur.decode("utf-8")
 
 	def make_checksum(self,data):
 		'''
@@ -104,9 +104,9 @@ class NMEA0183():
 		i = 0
 		# Remove ! or $ and *xx in the sentence
 		data = data[1:data.rfind('*')]
+		data = data.encode('utf-8')
 		while (i < len(data)):
-			input = binascii.b2a_hex(data[i])
-			input = int(input,16)
+			input = data[i]
 			#xor
 			csum = csum ^ input
 			i += 1
@@ -192,7 +192,7 @@ class NMEA0183():
 		Deconstructs NMEA depth readings.
 		'''
 		self.data_depth['meters'] = self.serial_data[1]
-		self.data_depth['offset'] = 0
+		self.data_depth['offset'] = self.serial_data[2]
 
 	def nmea_mwv(self):
 		'''
@@ -208,7 +208,7 @@ class NMEA0183():
 		Deconstructs NMEA water readings.
 		'''
 		self.data_weather['water_temp'] = self.serial_data[1]
-		self.data_weather['water_unit'] = 'C'
+		self.data_weather['water_unit'] = self.serial_data[2]
 
 	def nmea_mta(self):
 		'''

@@ -10,12 +10,11 @@ nmea = NMEA0183(serial_location,serial_baudrate,serial_timeout)
 
 #Starts the serial connection
 nmea.start()
+time.sleep(1)
 
 #Checks if there is a valid connection
 if nmea.exit == False:
    print('Connection!')
-   #wait for buffer
-   time.sleep(3)
 
    while True:
 
@@ -25,6 +24,7 @@ if nmea.exit == False:
       #Weather data
       temperature = nmea.data_weather['water_temp']
 
+      print('depth: {}\t temp: {}'.format(depth,temperature))
       time.sleep(0.1)
 
    #Quit the NMEA connection
